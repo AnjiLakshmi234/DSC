@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h> // Include stdlib.h for exit()
+
+#define MAX_SIZE 2  // Define the maximum size of the stack
+
+int s[MAX_SIZE], top = -1;  // Initialize the stack and top
+
+void clear_input_buffer() {
+    while (getchar() != '\n'); // Clear the input buffer
+}
+
+void push() {
+    int x;
+    // Check for stack overflow
+    if (top == MAX_SIZE - 1) {
+        printf("Stack overflow\n");
+        return;
+    }
+    printf("Enter element: ");
+    if (scanf("%d", &x) != 1) { // Check if scanf succeeded
+        printf("Invalid input. Please enter an integer.\n");
+        clear_input_buffer(); // Clear the input buffer
+        return;
+    }
+    top++;     // Increment the top index
+    s[top] = x; // Push the element onto the stack
+}
+
+int pop() {
+    // Check for stack underflow
+    if (top == -1) {
+        printf("Stack underflow\n");
+        return -1;  // Return -1 to indicate an error
+    }
+    printf("Popped element is %d\n", s[top]);
+    top--;  // Decrement the top index
+    return 0; // Return 0 to indicate success
+}
+
+void display() {
+    int i;
+    // Check if the stack is empty
+    if (top == -1) {
+        printf("Stack is empty\n");
+        return;
+    }
+    printf("Stack elements are:\n");
+    // Print all elements in the stack
+    for (i = top; i >= 0; i--) {
+        printf("%d\n", s[i]);
+    }
+}
+
+int main() {
+    int choice;
+    while (1) {
+        printf("\n1. Push\n2. Pop\n3. Display\n4. Exit\n");
+        printf("Enter your choice: ");
+        if (scanf("%d", &choice) != 1) { // Check if scanf succeeded
+            printf("Invalid input. Please enter an integer.\n");
+            clear_input_buffer(); // Clear the input buffer
+            continue; // Continue to the next iteration of the loop
+        }
+        switch (choice) {
+            case 1:
+                push();
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                return 0;  // Exit the program
+            default:
+                printf("Invalid choice, please try again.\n");
+        }
+    }
+    return 0;  // Return 0 to indicate successful execution
+}
