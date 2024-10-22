@@ -1,51 +1,51 @@
 #include <stdio.h>
-#include <stdlib.h> // Include stdlib.h for exit()
+#include <stdlib.h> 
 
-#define MAX_SIZE 2  // Define the maximum size of the stack
+#define MAX_SIZE 2  
 
-int s[MAX_SIZE], top = -1;  // Initialize the stack and top
+int s[MAX_SIZE], top = -1;  
 
 void clear_input_buffer() {
-    while (getchar() != '\n'); // Clear the input buffer
+    while (getchar() != '\n'); 
 }
 
 void push() {
     int x;
-    // Check for stack overflow
+  
     if (top == MAX_SIZE - 1) {
         printf("Stack overflow\n");
         return;
     }
     printf("Enter element: ");
-    if (scanf("%d", &x) != 1) { // Check if scanf succeeded
+    if (scanf("%d", &x) != 1) {
         printf("Invalid input. Please enter an integer.\n");
-        clear_input_buffer(); // Clear the input buffer
+        clear_input_buffer(); 
         return;
     }
-    top++;     // Increment the top index
-    s[top] = x; // Push the element onto the stack
+    top++;     
+    s[top] = x;
 }
 
 int pop() {
-    // Check for stack underflow
+    
     if (top == -1) {
         printf("Stack underflow\n");
-        return -1;  // Return -1 to indicate an error
+        return -1;  
     }
     printf("Popped element is %d\n", s[top]);
-    top--;  // Decrement the top index
-    return 0; // Return 0 to indicate success
+    top--;  
+    return 0; 
 }
 
 void display() {
     int i;
-    // Check if the stack is empty
+   
     if (top == -1) {
         printf("Stack is empty\n");
         return;
     }
     printf("Stack elements are:\n");
-    // Print all elements in the stack
+   
     for (i = top; i >= 0; i--) {
         printf("%d\n", s[i]);
     }
@@ -56,10 +56,10 @@ int main() {
     while (1) {
         printf("\n1. Push\n2. Pop\n3. Display\n4. Exit\n");
         printf("Enter your choice: ");
-        if (scanf("%d", &choice) != 1) { // Check if scanf succeeded
+        if (scanf("%d", &choice) != 1) { 
             printf("Invalid input. Please enter an integer.\n");
-            clear_input_buffer(); // Clear the input buffer
-            continue; // Continue to the next iteration of the loop
+            clear_input_buffer(); 
+            continue; 
         }
         switch (choice) {
             case 1:
@@ -72,10 +72,10 @@ int main() {
                 display();
                 break;
             case 4:
-                return 0;  // Exit the program
+                return 0; 
             default:
                 printf("Invalid choice, please try again.\n");
         }
     }
-    return 0;  // Return 0 to indicate successful execution
+    return 0; 
 }
