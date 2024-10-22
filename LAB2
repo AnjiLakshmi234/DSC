@@ -13,8 +13,8 @@ void main() {
     printf("Enter infix expression:\n");
     scanf("%s", infix);
 
-    length = strlen(infix); // Set length of the infix expression
-    push('#');  // Push a sentinel character onto the stack
+    length = strlen(infix);
+    push('#');  
 
     while (infixIndex < length) {
         symbol = infix[infixIndex];
@@ -32,7 +32,7 @@ void main() {
                 }
                 break;
 
-            case '+':  // Operator case for +, -, *, /
+            case '+':  
             case '-':
             case '*':
             case '/':
@@ -43,21 +43,20 @@ void main() {
                 push(symbol);
                 break;
 
-            default:  // Operand case (e.g., a variable or number)
+            default:  
                 postfix[pos++] = symbol;
                 break;
         }
         infixIndex++;
     }
 
-    // Pop remaining operators from the stack
+   
     while (top > 0) {
         temp = pop();
         postfix[pos++] = temp;
     }
 
-    postfix[pos] = '\0';  // Null terminate the postfix expression
-
+    postfix[pos] = '\0'; 
     printf("\nInfix expression: %s", infix);
     printf("\nPostfix expression: %s", postfix);
 }
