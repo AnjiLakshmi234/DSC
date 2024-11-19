@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure of a node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Stack Operations
+void push(struct Node** top, int data) {
+    struct Node* newNode = createNode(data);
+    newNode->next = *top;
+    *top = newNode;
+    printf("Pushed %d to stack.\n", data);
+}
+
+void pop(struct Node** top) {
+    if (*top == NULL) {
+        printf("Stack is empty. Nothing to pop.\n");
+        return;
+    }
+    struct Node* temp = *top;
+    *top = (*top)->next;
+    printf("Popped %d from stack.\n", temp->data);
+    free(temp);
+}
+
+// Queue Operations
+void enqueue(struct Node** front, struct Node** rear, int data) {
+    struct Node* newNode = createNode(data);
+    if (*rear == NULL) {
+        *front = *rear = newNode;
+    } else {
+        (*rear)->next = newNode;
+        *rear = newNode;
+    }
+    printf("Enqueued %d to queue.\n", data);
+}
+
+void dequeue(struct Node** front, struct Node** rear) {
+    if (*front == NULL) {
+        printf("Queue is empty. Nothing to dequeue.\n");
+        return;
+    }
+    struct Node* temp = *front;
+    *front = (*front)->next;
+    if (*front == NULL) {
+        *rear = NULL;
+    }
+    printf("Dequeued %d from queue.\n", temp->data);
+    free(temp);
+}
+
+// Function to display the linked list
+void display(struct Node* node) {
+    if (node == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    printf("List: ");
+    while (node != NULL) {
+        printf("%d -> ", node->data);
+        node = node->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node* stackTop = NULL; // Stack top pointer
+    struct Node* queueFront = NULL; // Queue front pointer
+    struct Node* queueRear = NULL;  // Queue rear pointer
+    int choice, data;
+
+    while (1) {
+        printf("\nChoose an operation:\n");
+        printf("1. Push to Stack\n");
+        printf("2. Pop from Stack\n");
+        printf("3. Enqueue to Queue\n");
+        printf("4. Dequeue from Queue\n");
+        printf("5. Display Stack\n");
+        printf("6. Display Queue\n");
+        printf("0. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter data to push onto stack: ");
+                scanf("%d", &data);
+                push(&stackTop, data);
+                break;
+            case 2:
+                pop(&stackTop);
+                break;
+            case 3:
+                printf("Enter data to enqueue into queue: ");
+                scanf("%d", &data);
+                enqueue(&queueFront, &queueRear, data);
+                break;
+            case 4:
+                dequeue(&queueFront, &queueRear);
+                break;
+            case 5:
+                printf("Stack contents:\n");
+                display(stackTop);
+                break;
+            case 6:
+                printf("Queue contents:\n");
+                display(queueFront);
+                break;
+            case 0:
+                printf("Exiting program.\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
