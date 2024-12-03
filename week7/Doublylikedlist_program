@@ -1,0 +1,197 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+struct node {
+    int data;
+    struct node* prev;
+    struct node* next;
+};
+
+
+typedef struct node node;
+
+
+void createDLL(node** start) {
+    node *newNode, *curr;
+    char ch;
+
+    *start = NULL;
+    curr = NULL;
+
+    
+    printf("Enter elements to create the doubly linked list.\n");
+
+    while(1) {
+        newNode = (node*)malloc(sizeof(node));  
+        
+        if (newNode == NULL) {
+            printf("Memory allocation failed\n");
+            return;
+        }
+
+       
+        printf("Enter element: ");
+        scanf("%d", &newNode->data);
+        
+        newNode->prev = NULL;
+        newNode->next = NULL;
+        
+        if (*start == NULL) {
+            *start = newNode;  
+            curr = newNode;    
+        } else {
+            curr->next = newNode;  
+            newNode->prev = curr;  
+            curr = newNode;        
+        }
+
+        
+        printf("Do you want to add another node (y/n)? ");
+        getchar(); 
+        scanf("%c", &ch);
+
+        if (ch == 'n' || ch == 'N') {
+            break;  
+        }
+    }
+
+    
+    curr->next = NULL;
+}
+
+
+void insertLeft(node* start, int targetData, int newData) {
+    node* newNode = (node*)malloc(sizeof(node));
+    node* temp = start;
+
+    
+    while (temp != NULL) {
+        if (temp->data == targetData) {
+            break;
+        }
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Node with value %d not found!\n", targetData);
+        return;
+    }
+
+   
+    newNode->data = newData;
+    newNode->prev = temp->prev;
+    newNode->next = temp;
+
+    if (temp->prev != NULL) {
+        temp->prev->next = newNode; 
+    } else {
+        start = newNode;  
+    }
+
+    temp->prev = newNode;  
+
+    printf("Node with value %d inserted before %d\n", newData, targetData);
+}
+
+
+void deleteNode(node** start, int targetData) {
+    node* temp = *start;
+
+    
+    while (temp != NULL) {
+        if (temp->data == targetData) {
+            break;
+        }
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Node with value %d not found!\n", targetData);
+        return;
+    }
+
+    
+    if (temp == *start) {
+        *start = temp->next;
+    }
+
+    
+    if (temp->prev != NULL) {
+        temp->prev->next = temp->next;
+    }
+
+    
+    if (temp->next != NULL) {
+        temp->next->prev = temp->prev;
+    }
+
+    free(temp);  
+    printf("Node with value %d deleted\n", targetData);
+}
+
+
+void displayDLL(node* start) {
+    node* temp = start;
+
+    if (temp == NULL) {
+        printf("The list is empty.\n");
+        return;
+    }
+
+    printf("Doubly Linked List: ");
+    while (temp != NULL) {
+        printf("%d <-> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    node* start = NULL;
+    int choice, targetData, newData;
+
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Create Doubly Linked List\n");
+        printf("2. Insert a node before a specific node\n");
+        printf("3. Delete a node by value\n");
+        printf("4. Display the list\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                createDLL(&start);
+                break;
+
+            case 2:
+                printf("Enter the value of the node before which to insert: ");
+                scanf("%d", &targetData);
+                printf("Enter the new data to insert: ");
+                scanf("%d", &newData);
+                insertLeft(start, targetData, newData);
+                break;
+
+            case 3:
+                printf("Enter the value of the node to delete: ");
+                scanf("%d", &targetData);
+                deleteNode(&start, targetData);
+                break;
+
+            case 4:
+                displayDLL(start);
+                break;
+
+            case 5:
+                printf("Exiting...\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+
+    return 0;
+}
